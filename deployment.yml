@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-sidecar-deployment
+  namespace: grpc-sidecar
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: grpc-sidecar
+  template:
+    metadata:
+      labels: # labels to select/identify the deployment
+        app: grpc-sidecar  
+    spec:     # pod spec                  
+      containers: 
+      - name: grpc-sidecar-sidecar 
+        image: sureshballa/grpcserver:latest
+        ports:
+        - containerPort: 50051
+      - name: grpc-sidecar-main 
+        image: sureshballa/grpcclient:latest
+        ports:
+        - containerPort: 3000

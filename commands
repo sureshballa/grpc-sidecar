@@ -1,0 +1,33 @@
+kubectl create namespace grpc-sidecar
+To enable istio side car
+kubectl label namespace grpc-sidecar istio-injection=enabled
+kubectl create -f deployment.yml --save-config
+kubectl get deployments -n grpc-sidecar
+kubectl get pods -n grpc-sidecar
+kubectl create -f service.yml
+kubectl get svc -n grpc-sidecar
+kubectl describe services grpc-sidecar-service -n grpc-sidecar
+kubectl get pods --selector="app=grpc-sidecar" --output=wide -n grpc-sidecar
+minikube service grpc-sidecar-service -n grpc-sidecar
+
+minikube service list
+
+
+Can't expose service?
+https://github.com/kubernetes/minikube/issues/2614
+
+
+
+Clean up commands:
+
+kubectl delete service grpc-sidecar-service -n grpc-sidecar
+kubectl delete deployment grpc-sidecar-deployment -n grpc-sidecar
+
+minikube start --cpus 4 --memory 8192
+
+List Containers by Pod
+kubectl get pods --all-namespaces -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' |\
+sort
+
+
+==============================================

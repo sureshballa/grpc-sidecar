@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-sidecar-service
+  namespace: grpc-sidecar
+  labels:
+    app: grpc-sidecar
+spec:
+  selector:
+    app: grpc-sidecar
+  ports:
+  - protocol: TCP
+    port: 3000
+    nodePort: 30002
+  type: NodePort
